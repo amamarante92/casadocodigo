@@ -1,4 +1,4 @@
-class LivroDAO{
+class LivroDAO {
     constructor(db) {
         this._db = db;
     }
@@ -14,6 +14,32 @@ class LivroDAO{
                 }
             )
 
+        });
+    }
+
+    adiciona(livro) {
+        return new Promise((resolve, reject) => {
+            this._db.run(`
+            INSERT INTO LIVROS (
+                    titulo,
+                    preco,
+                    descricao
+                ) values (?, ?, ?)
+            `, [
+                livro.titulo,
+                livro.preco,
+                livro.descricao
+                ],
+                function(err){
+                    if(err){
+                        console.log(err);
+                        return reject('Não foi possível adicionar o livro');
+                    }
+
+
+                    resolve();
+                }
+            );
         });
     }
 }
