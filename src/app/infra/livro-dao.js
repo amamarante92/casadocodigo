@@ -62,6 +62,45 @@ class LivroDAO {
         });
     }
 
+
+    buscaPorId(id){
+        return new Promise((resolve, reject) =>{
+            this._db.all(
+                'SELECT * FROM livros WHERE id = ?',
+                [id],
+                (erro, resultado) =>{
+                    if(erro){
+                        return reject('impossível buscar o livro');
+                    }
+                    return resolve(resultado);
+                }
+            )
+        });
+    }
+
+    atualizar (livro){
+        return new Promise((resolve, reject) => {
+            this._db.run(
+                `UPDATE livros
+                SET titulo = ?,
+                preco = ?,
+                descricao = ?
+                WHERE id = ?`,
+                [
+                    livro.titulo,
+                    livro.preco,
+                    livro.descricao,
+                    livro.id
+                ],
+                (erro) =>{
+                    if(erro){
+                        return reject('não foi possível atualizar');
+                    }
+                    return resolve();
+                }
+            )
+        });
+    }
 }
 
 module.exports = LivroDAO;
