@@ -4,11 +4,14 @@
 
         <form action="/livros" method="post">
 
-            <input type="hidden" id="id" name="id" value="${data.livro.id}"/>
+            <div if(data.livro.id)>
+                <input type="hidden" name="_method" value="PUT">
+                <input type="hidden" id="id" name="id" value="${data.livro.id}" />
+            </div>
 
             <div>
                 <label for="titulo">Titulo:</label>
-                <input type="text" id="titulo" name="titulo" placeholder="coloque o titulo" value=`${data.livro.titulo}` />
+                <input type="text" id="titulo" name="titulo" placeholder="coloque o titulo" value="${data.livro.titulo}" />
             </div>
             <div>
                 <label for="preco">Preço:</label>

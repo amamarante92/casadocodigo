@@ -79,4 +79,13 @@ module.exports = (app) => {
             .catch(erro => console.log(erro));
 
     });
+
+    app.put('/livros', function(req, resp) {
+
+        const livroDao = new LivroDAO(db);
+
+        livroDao.atualiza(req.body)
+                .then(resp.redirect('/livros'))
+                .catch(erro => console.log(erro));
+    });
 }

@@ -78,7 +78,7 @@ class LivroDAO {
         });
     }
 
-    atualizar (livro){
+    atualiza (livro){
         return new Promise((resolve, reject) => {
             this._db.run(
                 `UPDATE livros
