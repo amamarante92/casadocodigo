@@ -13,7 +13,6 @@ app.use(bodyParser.urlencoded({
 }));
 app.use(methodOverride(function (req, res) {
     if (req.body && typeof req.body === 'object' && '_method' in req.body) {
-      // look in urlencoded POST bodies and delete it
       var method = req.body._method;
       delete req.body._method;
       return method;
@@ -22,5 +21,19 @@ app.use(methodOverride(function (req, res) {
 
 const rotas = require('../app/rotas/rotas');
 rotas(app);
+
+//ao tratar erros declarar sempre os quatro parâmetros, 
+//caso contrário o express não saberá que se trata de tratamento de erros
+app.use(function (req, resp, next){
+    return resp.status(404).marko(
+      require('../app/views/base/erros/404.marko')
+    );
+})
+
+app.use(function (erro, req, resp, next){
+  return resp.status(500).marko(
+    require('../app/views/base/erros/500.marko')
+  );
+})
 
 module.exports = app;
