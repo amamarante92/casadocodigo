@@ -1,3 +1,4 @@
+const LivroControlador = require('./livro-controlador');
 const templates = require('../views/templates');
 
 class BaseControlador {
@@ -26,8 +27,32 @@ class BaseControlador {
     }
 
     efetuarLogin(){
-        return function (req, resp){
+        return function (req, resp, next){
             //lógica de login
+            const passport = req.passport;
+            passport.authenticate('local', (erro, usuario, info)=>{
+                //se houver informações, continua na página de login
+                if (info){
+                    return resp.marko(templates.base.login);
+                }
+
+                //se houver erro, cai no tratamento de erros
+                if(erro){
+                    return next(erro);
+                }
+
+                // aqui o login foi efetuado con sucesso
+                // chama-se a função de serializar a sessão
+                req.login(usuario, (erro)=>{
+                    //se houver erros no processo de serialização
+                    if(erro) {
+                        return next(erro)
+                    }
+                    
+                    //se o login for efetuado com sucesso
+                    return resp.redirect(LivroControlador.rotas().lista);
+                });
+            })(req, resp, next);
         }
     }
 }

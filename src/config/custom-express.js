@@ -20,7 +20,7 @@ app.use(methodOverride(function (req, res) {
 }));
 
 const sessaoAutenticacao = require('./sessao-autenticacao');
-sessaoAutenticacao.use(app);
+sessaoAutenticacao(app); //esse módulo é o que está com defeito
 
 const rotas = require('../app/rotas/rotas');
 rotas(app);
