@@ -3,8 +3,18 @@ const LivroControlador = require('../controladores/livro-controlador');
 const Livro = require('../modelos/livro');
 const livroControlador = new LivroControlador();
 
+const BaseControlador = require('../controladores/base-controlador');
+
 module.exports = (app) => {
     const livroRotas = LivroControlador.rotas();
+
+    app.use(livroRotas.autenticadas, function(req, resp, next){
+        if(req.isAuthenticated()){
+            next(); //se autenticado, deixa a requisição seguir em frente
+        }else{
+            resp.redirect(BaseControlador.rotas().login);
+        }
+    });
 
     app.route(livroRotas.lista)
         .get(livroControlador.lista())
